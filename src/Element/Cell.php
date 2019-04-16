@@ -17,4 +17,23 @@ use AndyDune\HtmlTable\Part\AttributesAwareTrait;
 class Cell
 {
     use AttributesAwareTrait;
+
+    /**
+     * @var Row
+     */
+    protected $row;
+
+    public function __construct(Row $row)
+    {
+        $this->row = $row;
+    }
+
+    /**
+     * @return Row
+     */
+    public function getRow()
+    {
+        return $this->row;
+    }
+
 }

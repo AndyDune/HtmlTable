@@ -20,7 +20,10 @@ class Row
 {
     use AttributesAwareTrait;
 
-    protected $head = false;
+    /**
+     * @var Cell[]
+     */
+    protected $cells = [];
 
     /**
      * @var Table
@@ -30,6 +33,24 @@ class Row
     public function __construct(Table $table)
     {
         $this->table = $table;
+    }
+
+    /**
+     * @return Cell
+     */
+    public function cell()
+    {
+        $cell = new Cell($this);
+        $this->cells[] = $cell;
+        return $cell;
+    }
+
+    /**
+     * @return Table
+     */
+    public function getTable()
+    {
+        return $this->table;
     }
 
 }

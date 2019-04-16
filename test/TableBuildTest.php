@@ -10,7 +10,6 @@
  * @copyright 2019 Andrey Ryzhov
  */
 
-
 namespace AndyDuneTest\HtmlTable;
 
 use AndyDune\HtmlTable\Element\Cell;
@@ -66,8 +65,15 @@ class TableBuildTest extends TestCase
         $cell->addStyle('color: red');
         $cell->addStyle('font', 'italy');
         $this->assertEquals('color: red; font: italy', $table->getAttributeStyleValue());
+    }
 
+    public function testClassStructure()
+    {
+        $table = new Table();
+        $row = $table->row();
+        $cell = $row->cell();
 
+        $this->assertEquals($cell->getRow()->getTable(), $table);
     }
 
 }
