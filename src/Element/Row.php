@@ -13,12 +13,15 @@
 
 namespace AndyDune\HtmlTable\Element;
 
+use AndyDune\HtmlTable\Part\AttributesAwareInterface;
 use AndyDune\HtmlTable\Part\AttributesAwareTrait;
+use AndyDune\HtmlTable\Part\ContentAwareTrait;
 use AndyDune\HtmlTable\Table;
 
-class Row
+class Row implements AttributesAwareInterface
 {
     use AttributesAwareTrait;
+    use ContentAwareTrait;
 
     /**
      * @var Cell[]
@@ -29,6 +32,8 @@ class Row
      * @var Table
      */
     protected $table;
+
+    protected $columnCount = 0;
 
     public function __construct(Table $table)
     {
@@ -41,6 +46,7 @@ class Row
     public function cell()
     {
         $cell = new Cell($this);
+        $this->addColumnCount();
         $this->cells[] = $cell;
         return $cell;
     }
@@ -51,6 +57,33 @@ class Row
     public function getTable()
     {
         return $this->table;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getColumnCount()
+    {
+        return $this->columnCount;
+    }
+
+    /**
+     * @param int $columnCount
+     */
+    public function addColumnCount($columnCount = 1)
+    {
+        $this->columnCount += $columnCount;
+        return $this;
+    }
+
+    /**
+     * @param int $columnCount
+     */
+    public function deductColumnCount($columnCount = 1)
+    {
+        $this->columnCount -= $columnCount;
+        return $this;
     }
 
 }

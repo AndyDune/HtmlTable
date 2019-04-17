@@ -13,10 +13,12 @@
 
 namespace AndyDune\HtmlTable;
 
+use AndyDune\HtmlTable\Element\Head;
 use AndyDune\HtmlTable\Element\Row;
+use AndyDune\HtmlTable\Part\AttributesAwareInterface;
 use AndyDune\HtmlTable\Part\AttributesAwareTrait;
 
-class Table
+class Table implements AttributesAwareInterface
 {
     use AttributesAwareTrait;
 
@@ -28,6 +30,13 @@ class Table
     protected $rows = [];
 
     /**
+     * @var null|Head
+     */
+    protected $head = null;
+
+
+
+    /**
      * @return Row
      */
     public function row()
@@ -36,4 +45,34 @@ class Table
         $this->rows[] = $row;
         return $row;
     }
+
+    /**
+     * @return Head|null
+     */
+    public function head()
+    {
+        if (!$this->head) {
+            $this->head = new Head($this);
+        }
+        return $this->head;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasHead()
+    {
+        return (bool)$this->head;
+    }
+
+    /**
+     * @return Row[]
+     */
+    public function getRows()
+    {
+        return $this->rows;
+    }
+
+
+
 }
