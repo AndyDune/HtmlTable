@@ -86,4 +86,12 @@ class Row implements AttributesAwareInterface
         return $this;
     }
 
+    /**
+     * @return Cell[]
+     */
+    public function getCells()
+    {
+        return $this->cells;
+    }
+
 }

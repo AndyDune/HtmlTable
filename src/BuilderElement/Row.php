@@ -14,6 +14,7 @@
 namespace AndyDune\HtmlTable\BuilderElement;
 
 use AndyDune\HtmlTable\Element\Row as RowElement;
+use AndyDune\StringReplace\PowerReplace;
 
 class Row implements ElementInterface
 {
@@ -27,7 +28,11 @@ class Row implements ElementInterface
      */
     protected $maxColumnCount;
 
-    public function __construct(RowElement $row, $maxColumnCount)
+    const TEMPLATE =
+        '<tr#attributes:prefix(" ")#>#content#</tr>';
+
+
+    public function __construct(RowElement $row, $maxColumnCount = null)
     {
         $this->row = $row;
         $this->maxColumnCount = $maxColumnCount;
@@ -35,26 +40,17 @@ class Row implements ElementInterface
 
     public function getHtml()
     {
-        $content = '';
+        $content = $this->row->getContent();
 
-        $cells = $this->row->getCe;
-
-        $maxColumnCount = 0;
-        foreach ($rows as $row) {
-            if ($row->getColumnCount() > $maxColumnCount) {
-                $maxColumnCount = $row->getColumnCount();
-            }
+        $cells = $this->row->getCells();
+        foreach ($cells as $cell) {
+            $content .= (new Cell($cell))->getHtml();
         }
 
-        foreach ($rows as $row) {
-            $rowBuilder = new Row($row, $maxColumnCount);
-            $content .= $rowBuilder->getHtml();
-        }
-        if ($this->table->isHasHead()) {
-            return sprintf(self::TEMPLATE_BODY_TAG, $content);
-        } else {
-            return $content;
-        }
+        $replace = new PowerReplace();
+        $replace->attributes = (new Attributes($this->row))->getHtml();
+        $replace->content = $content;
 
+        return $replace->replace(self::TEMPLATE);
     }
 }

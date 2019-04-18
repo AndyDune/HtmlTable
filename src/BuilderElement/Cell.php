@@ -13,6 +13,8 @@
 
 namespace AndyDune\HtmlTable\BuilderElement;
 use AndyDune\HtmlTable\Element\Cell as CellElement;
+use AndyDune\StringReplace\FunctionsHolder;
+use AndyDune\StringReplace\PowerReplace;
 
 class Cell implements ElementInterface
 {
@@ -21,8 +23,32 @@ class Cell implements ElementInterface
      */
     protected $cell;
 
+    const TEMPLATE =
+        '<td#colspan:more:printf(\' colspan="%s"\')##rowspan:more:printf(\' rowspan="%s"\')##attributes:prefix(" ")#>#content#</td>';
+
     public function __construct(CellElement $cell)
     {
         $this->cell = $cell;
     }
+
+    public function getHtml()
+    {
+
+        $functionHolder = new FunctionsHolder();
+        $functionHolder->addFunction('more', function ($string) {
+            if ($string > 1) {
+                return $string;
+            }
+            return '';
+        });
+        $replace = new PowerReplace($functionHolder);
+
+        $replace->attributes = (new Attributes($this->cell))->getHtml();
+        $replace->content = $this->cell->getContent();
+        $replace->colspan = $this->cell->getColspan();
+        $replace->rowspan = $this->cell->getRowspan();
+
+        return $replace->replace(self::TEMPLATE);
+    }
+
 }
