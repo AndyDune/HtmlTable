@@ -14,10 +14,12 @@
 namespace AndyDune\HtmlTable;
 
 use AndyDune\HtmlTable\BuilderElement\Attributes;
+use AndyDune\HtmlTable\BuilderElement\ElementInterface;
 use AndyDune\HtmlTable\BuilderElement\TableBody;
+use AndyDune\HtmlTable\BuilderElement\TableHead;
 use AndyDune\StringReplace\PowerReplace;
 
-class Builder
+class Builder implements ElementInterface
 {
     /**
      * @var Table
@@ -25,6 +27,15 @@ class Builder
     protected $table;
 
     const TABLE_TEMPLATE = '<table#attributes#>#head##foot##body#</table>';
+    const TABLE_TEMPLATE_GROUPING_SECTIONS = '<table#attributes#>#head:prefix(<thead>):postfix(</thead>)##foot:prefix(<tfoot>):postfix(</tfoot>)##body:prefix(<tbody>):postfix(</tbody>)#</table>';
+
+    /**
+     *
+     * Allow using grouping sections
+     * @var bool
+     */
+    protected $groupingSections = false;
+
 
     public function __construct(Table $table)
     {
@@ -33,14 +44,48 @@ class Builder
 
     public function getHtml()
     {
+        $replace = new PowerReplace();
+
         $tableBodyBuilder = new TableBody($this->table);
         $maxColumnCount = $tableBodyBuilder->getMaxRowCount();
 
-        $replace = new PowerReplace();
-        $replace->body = $tableBodyBuilder->getHtml($maxColumnCount);
+        if ($this->table->isHasHead()) {
+            $tableHeadBuilder = new TableHead($this->table);
+            if ($tableHeadBuilder->getMaxRowCount() > $maxColumnCount) {
+                $maxColumnCount = $tableHeadBuilder->getMaxRowCount();
+            }
+
+            $tableHeadBuilder->setActualMaxColumnCount($maxColumnCount);
+            $replace->head = $tableHeadBuilder->getHtml();
+        }
+
+        $tableBodyBuilder->setActualMaxColumnCount($maxColumnCount);
+
+        $replace->body = $tableBodyBuilder->getHtml();
         $replace->attributes = (new Attributes($this->table))->getHtml();
 
+        if ($this->isGroupingSections()) {
+            return $replace->replace(self::TABLE_TEMPLATE_GROUPING_SECTIONS);
+        }
         return $replace->replace(self::TABLE_TEMPLATE);
-
     }
+
+    /**
+     * @return bool
+     */
+    public function isGroupingSections()
+    {
+        return $this->groupingSections;
+    }
+
+    /**
+     * @param bool $groupingSections
+     * @return $this
+     */
+    public function setGroupingSections($groupingSections)
+    {
+        $this->groupingSections = $groupingSections;
+        return $this;
+    }
+
 }

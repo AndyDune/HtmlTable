@@ -31,6 +31,7 @@ class Row implements ElementInterface
     const TEMPLATE =
         '<tr#attributes:prefix(" ")#>#content#</tr>';
 
+    protected $buildCellClass = Cell::class;
 
     public function __construct(RowElement $row, $maxColumnCount = null)
     {
@@ -44,7 +45,7 @@ class Row implements ElementInterface
 
         $cells = $this->row->getCells();
         foreach ($cells as $cell) {
-            $content .= (new Cell($cell))->getHtml();
+            $content .= (new $this->buildCellClass($cell))->getHtml();
         }
 
         $replace = new PowerReplace();

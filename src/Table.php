@@ -35,7 +35,6 @@ class Table implements AttributesAwareInterface
     protected $head = null;
 
 
-
     /**
      * @return Row
      */

@@ -12,6 +12,7 @@
 
 namespace AndyDuneTest\HtmlTable;
 
+use AndyDune\HtmlTable\Builder;
 use AndyDune\HtmlTable\BuilderElement\Attributes;
 use AndyDune\HtmlTable\Element\Cell;
 use AndyDune\HtmlTable\Element\Head;
@@ -180,6 +181,56 @@ class TableBuildTest extends TestCase
         $this->assertEquals('<tr style="color: black">'
             . '<td>one</td><td class="second">two</td><td>3</td></tr>',
             $html);
+
+    }
+
+    public function testBuildTable()
+    {
+        $table = new Table();
+        $row = $table->row();
+        $row->cell()->setContent(1);
+        $row->cell()->setContent(2);
+        $row = $table->row();
+        $row->cell()->setContent(11);
+        $row->cell()->setContent(12);
+
+        $builder = new Builder($table);
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><td>1</td><td>2</td></tr>'
+            . '<tr><td>11</td><td>12</td></tr></table>', $html);
+
+        $row = $table->head();
+        $row->cell()->setContent('h1');
+        $row->cell()->setContent('h2');
+
+        $builder = new Builder($table);
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>h1</th><th>h2</th></tr><tr><td>1</td><td>2</td></tr>'
+            . '<tr><td>11</td><td>12</td></tr></table>', $html);
+
+
+        $table = new Table();
+        $row = $table->row();
+        $row->cell()->setContent(1);
+        $row->cell()->setContent(2);
+        $row = $table->row();
+        $row->cell()->setContent(11);
+        $row->cell()->setContent(12);
+
+        $builder = new Builder($table);
+        $builder->setGroupingSections(true);
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tbody><tr><td>1</td><td>2</td></tr>'
+            . '<tr><td>11</td><td>12</td></tr></tbody></table>', $html);
+
+        $row = $table->head();
+        $row->cell()->setContent('h1');
+        $row->cell()->setContent('h2');
+
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><thead><tr><th>h1</th><th>h2</th></tr></thead>'
+            . '<tbody><tr><td>1</td><td>2</td></tr><tr><td>11</td><td>12</td></tr></tbody></table>', $html);
+
 
     }
 

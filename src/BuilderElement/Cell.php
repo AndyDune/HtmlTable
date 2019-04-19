@@ -23,7 +23,7 @@ class Cell implements ElementInterface
      */
     protected $cell;
 
-    const TEMPLATE =
+    protected $template =
         '<td#colspan:more:printf(\' colspan="%s"\')##rowspan:more:printf(\' rowspan="%s"\')##attributes:prefix(" ")#>#content#</td>';
 
     public function __construct(CellElement $cell)
@@ -48,7 +48,7 @@ class Cell implements ElementInterface
         $replace->colspan = $this->cell->getColspan();
         $replace->rowspan = $this->cell->getRowspan();
 
-        return $replace->replace(self::TEMPLATE);
+        return $replace->replace($this->template);
     }
 
 }

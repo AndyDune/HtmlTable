@@ -21,7 +21,7 @@ class TableBody implements ElementInterface
      */
     protected $table;
 
-    const TEMPLATE_BODY_TAG = '<tbody>%s</tbody>';
+    protected $actualMaxColumnCount = null;
 
     public function __construct(Table $table)
     {
@@ -41,20 +41,34 @@ class TableBody implements ElementInterface
         return $maxColumnCount;
     }
 
-    public function getHtml($maxColumnCount = null)
+    public function getHtml()
     {
         $content = '';
         $rows = $this->table->getRows();
 
         foreach ($rows as $row) {
-            $rowBuilder = new Row($row, $maxColumnCount);
+            $rowBuilder = new Row($row, $this->getActualMaxColumnCount());
             $content .= $rowBuilder->getHtml();
         }
-        if ($this->table->isHasHead()) {
-            return sprintf(self::TEMPLATE_BODY_TAG, $content);
-        } else {
-            return $content;
-        }
+        return $content;
+    }
+
+    /**
+     * @return null
+     */
+    public function getActualMaxColumnCount()
+    {
+        return $this->actualMaxColumnCount;
+    }
+
+    /**
+     * @param int $actualMaxColumnCount
+     * @return $this
+     */
+    public function setActualMaxColumnCount($actualMaxColumnCount)
+    {
+        $this->actualMaxColumnCount = $actualMaxColumnCount;
+        return $this;
     }
 
 }
