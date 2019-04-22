@@ -95,7 +95,7 @@ $head->cell()->setContent('Updated');
 $head->cell()->setContent('Uploaded');
 $head->cell()->setContent('Uploaded');
 $head->cell()->setContent('Data');
-// Empty cells woll be added automatically depends on max cell count for next rows.
+// Empty cells will be added automatically depends on max cell count for next rows.
 foreach ($list as $file) {
     $row = $table->row();
     if ($file->getStatus() == 2) {

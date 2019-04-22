@@ -187,6 +187,7 @@ class TableBuildTest extends TestCase
     public function testBuildTable()
     {
         $table = new Table();
+        $table->addClass('good');
         $row = $table->row();
         $row->cell()->setContent(1);
         $row->cell()->setContent(2);
@@ -196,7 +197,7 @@ class TableBuildTest extends TestCase
 
         $builder = new Builder($table);
         $html = $builder->getHtml();
-        $this->assertEquals('<table><tr><td>1</td><td>2</td></tr>'
+        $this->assertEquals('<table class="good"><tr><td>1</td><td>2</td></tr>'
             . '<tr><td>11</td><td>12</td></tr></table>', $html);
 
         $row = $table->head();
@@ -205,7 +206,7 @@ class TableBuildTest extends TestCase
 
         $builder = new Builder($table);
         $html = $builder->getHtml();
-        $this->assertEquals('<table><tr><th>h1</th><th>h2</th></tr><tr><td>1</td><td>2</td></tr>'
+        $this->assertEquals('<table class="good"><tr><th>h1</th><th>h2</th></tr><tr><td>1</td><td>2</td></tr>'
             . '<tr><td>11</td><td>12</td></tr></table>', $html);
 
 
@@ -230,9 +231,49 @@ class TableBuildTest extends TestCase
         $html = $builder->getHtml();
         $this->assertEquals('<table><thead><tr><th>h1</th><th>h2</th></tr></thead>'
             . '<tbody><tr><td>1</td><td>2</td></tr><tr><td>11</td><td>12</td></tr></tbody></table>', $html);
-
-
     }
 
+    public function testBuildTableSelectOrder()
+    {
+        $table = new Table();
+        $head = $table->head();
+        $head->cell('one');
+        $head->cell('two');
+        $row = $table->row();
+        $row->cell('two')->setContent(2);
+        $row->cell('one')->setContent(1);
+
+        $builder = new Builder($table);
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>one</th><th>two</th></tr>'
+            . '<tr><td>1</td><td>2</td></tr></table>', $html);
+
+        $head->cell('three');
+
+        $builder = new Builder($table);
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>one</th><th>two</th><th>three</th></tr>'
+            . '<tr><td>1</td><td>2</td><td></td></tr></table>', $html);
+
+
+        $row->cell('two')->setContent(22);
+        $row->cell('three')->setContent(3);
+
+        $builder = new Builder($table);
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>one</th><th>two</th><th>three</th></tr>'
+            . '<tr><td>1</td><td>22</td><td>3</td></tr></table>', $html);
+
+        $row = $table->row();
+
+
+        $builder = new Builder($table);
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>one</th><th>two</th><th>three</th></tr>'
+            . '<tr><td>1</td><td>22</td><td>3</td></tr>'
+            . '<tr><td></td><td></td><td></td></tr>'
+            . '</table>', $html);
+
+    }
 
 }

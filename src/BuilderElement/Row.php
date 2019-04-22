@@ -1,8 +1,6 @@
 <?php
 /**
  *
- * PHP version >= 5.6
- *
  * @package andydune/html-table
  * @link  https://github.com/AndyDune/HtmlTable for the canonical source repository
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -14,6 +12,7 @@
 namespace AndyDune\HtmlTable\BuilderElement;
 
 use AndyDune\HtmlTable\Element\Row as RowElement;
+use AndyDune\HtmlTable\Element\Cell as CellElement;
 use AndyDune\StringReplace\PowerReplace;
 
 class Row implements ElementInterface
@@ -28,6 +27,8 @@ class Row implements ElementInterface
      */
     protected $maxColumnCount;
 
+    protected $cellOrderMap = [];
+
     const TEMPLATE =
         '<tr#attributes:prefix(" ")#>#content#</tr>';
 
@@ -39,13 +40,36 @@ class Row implements ElementInterface
         $this->maxColumnCount = $maxColumnCount;
     }
 
+    /**
+     * Array of cells codes to show in order.
+     *
+     * @param array $mapArray
+     * @return $this
+     */
+    public function setCellsOrderMap($mapArray = [])
+    {
+        $this->cellOrderMap = $mapArray;
+        return $this;
+    }
+
+
     public function getHtml()
     {
         $content = $this->row->getContent();
 
         $cells = $this->row->getCells();
-        foreach ($cells as $cell) {
-            $content .= (new $this->buildCellClass($cell))->getHtml();
+        if ($this->cellOrderMap) {
+            foreach ($this->cellOrderMap as $cellCode) {
+                if (array_key_exists($cellCode, $cells)) {
+                    $content .= (new $this->buildCellClass($cells[$cellCode]))->getHtml();
+                } else {
+                    $content .= (new $this->buildCellClass(new CellElement($this->row)))->getHtml();
+                }
+            }
+        } else {
+            foreach ($cells as $cellCode => $cell) {
+                $content .= (new $this->buildCellClass($cell))->getHtml();
+            }
         }
 
         $replace = new PowerReplace();

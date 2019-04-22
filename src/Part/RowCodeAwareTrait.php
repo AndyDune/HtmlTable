@@ -8,10 +8,11 @@
  * @copyright 2019 Andrey Ryzhov
  */
 
-namespace AndyDune\HtmlTable\BuilderElement;
+
+namespace AndyDune\HtmlTable\Part;
 
 
-class Head extends Row
+trait RowCodeAwareTrait
 {
-    protected $buildCellClass = HeadCell::class;
+
 }

@@ -41,14 +41,28 @@ class Row implements AttributesAwareInterface
     }
 
     /**
+     * @param null|string $rowCode
      * @return Cell
      */
-    public function cell()
+    public function cell($rowCode = null)
     {
         $cell = new Cell($this);
+        $cell->setContent($rowCode);
         $this->addColumnCount();
-        $this->cells[] = $cell;
+        if ($rowCode) {
+            $this->cells[$rowCode] = $cell;
+        } else {
+            $this->cells[] = $cell;
+        }
         return $cell;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCellsOrderMap()
+    {
+        return array_keys($this->cells);
     }
 
     /**

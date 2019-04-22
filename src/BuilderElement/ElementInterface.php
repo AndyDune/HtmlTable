@@ -1,14 +1,12 @@
 <?php
 /**
- * ----------------------------------------------
- * | Author: Andrey Ryzhov (Dune) <info@rznw.ru> |
- * | Site: www.rznw.ru                           |
- * | Phone: +7 (4912) 51-10-23                   |
- * | Date: 17.04.2019                            |
- * -----------------------------------------------
  *
+ * @package andydune/html-table
+ * @link  https://github.com/AndyDune/HtmlTable for the canonical source repository
+ * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @author Andrey Ryzhov  <info@rznw.ru>
+ * @copyright 2019 Andrey Ryzhov
  */
-
 
 namespace AndyDune\HtmlTable\BuilderElement;
 

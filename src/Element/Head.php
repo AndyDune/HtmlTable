@@ -1,8 +1,6 @@
 <?php
 /**
  *
- * PHP version >= 5.6
- *
  * @package andydune/html-table
  * @link  https://github.com/AndyDune/HtmlTable for the canonical source repository
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License

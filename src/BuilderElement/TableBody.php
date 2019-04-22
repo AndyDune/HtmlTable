@@ -1,32 +1,21 @@
 <?php
 /**
- * ----------------------------------------------
- * | Author: Andrey Ryzhov (Dune) <info@rznw.ru> |
- * | Site: www.rznw.ru                           |
- * | Phone: +7 (4912) 51-10-23                   |
- * | Date: 17.04.2019                            |
- * -----------------------------------------------
  *
+ * PHP version >= 5.6
+ *
+ * @package andydune/html-table
+ * @link  https://github.com/AndyDune/HtmlTable for the canonical source repository
+ * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @author Andrey Ryzhov  <info@rznw.ru>
+ * @copyright 2019 Andrey Ryzhov
  */
-
 
 namespace AndyDune\HtmlTable\BuilderElement;
 
-use AndyDune\HtmlTable\Table;
-
-class TableBody implements ElementInterface
+class TableBody extends TableHead
 {
-    /**
-     * @var Table
-     */
-    protected $table;
 
-    protected $actualMaxColumnCount = null;
-
-    public function __construct(Table $table)
-    {
-        $this->table = $table;
-    }
+    protected $cellOrderMap = [];
 
     public function getMaxRowCount()
     {
@@ -48,26 +37,21 @@ class TableBody implements ElementInterface
 
         foreach ($rows as $row) {
             $rowBuilder = new Row($row, $this->getActualMaxColumnCount());
+            $rowBuilder->setCellsOrderMap($this->cellOrderMap);
             $content .= $rowBuilder->getHtml();
         }
         return $content;
     }
 
     /**
-     * @return null
-     */
-    public function getActualMaxColumnCount()
-    {
-        return $this->actualMaxColumnCount;
-    }
-
-    /**
-     * @param int $actualMaxColumnCount
+     * Array of cells codes to show in order.
+     *
+     * @param array $mapArray
      * @return $this
      */
-    public function setActualMaxColumnCount($actualMaxColumnCount)
+    public function setCellsOrderMap($mapArray = [])
     {
-        $this->actualMaxColumnCount = $actualMaxColumnCount;
+        $this->cellOrderMap = $mapArray;
         return $this;
     }
 

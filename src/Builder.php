@@ -26,8 +26,8 @@ class Builder implements ElementInterface
      */
     protected $table;
 
-    const TABLE_TEMPLATE = '<table#attributes#>#head##foot##body#</table>';
-    const TABLE_TEMPLATE_GROUPING_SECTIONS = '<table#attributes#>#head:prefix(<thead>):postfix(</thead>)##foot:prefix(<tfoot>):postfix(</tfoot>)##body:prefix(<tbody>):postfix(</tbody>)#</table>';
+    const TABLE_TEMPLATE = '<table#attributes:prefix(" ")#>#head##foot##body#</table>';
+    const TABLE_TEMPLATE_GROUPING_SECTIONS = '<table#attributes:prefix(" ")#>#head:prefix(<thead>):postfix(</thead>)##foot:prefix(<tfoot>):postfix(</tfoot>)##body:prefix(<tbody>):postfix(</tbody>)#</table>';
 
     /**
      *
@@ -51,6 +51,7 @@ class Builder implements ElementInterface
 
         if ($this->table->isHasHead()) {
             $tableHeadBuilder = new TableHead($this->table);
+            $tableBodyBuilder->setCellsOrderMap($this->table->head()->getCellsOrderMap());
             if ($tableHeadBuilder->getMaxRowCount() > $maxColumnCount) {
                 $maxColumnCount = $tableHeadBuilder->getMaxRowCount();
             }

@@ -12,9 +12,23 @@
 
 namespace AndyDune\HtmlTable\BuilderElement;
 
+use AndyDune\HtmlTable\Table;
 
-class TableHead extends TableBody
+class TableHead implements ElementInterface
 {
+
+    /**
+     * @var Table
+     */
+    protected $table;
+
+    protected $actualMaxColumnCount = null;
+
+    public function __construct(Table $table)
+    {
+        $this->table = $table;
+    }
+
 
     public function getMaxRowCount()
     {
@@ -34,5 +48,23 @@ class TableHead extends TableBody
         $rowBuilder = new Head($this->table->head(), $this->getActualMaxColumnCount());
         return $rowBuilder->getHtml();
 
+    }
+
+    /**
+     * @return null
+     */
+    public function getActualMaxColumnCount()
+    {
+        return $this->actualMaxColumnCount;
+    }
+
+    /**
+     * @param int $actualMaxColumnCount
+     * @return $this
+     */
+    public function setActualMaxColumnCount($actualMaxColumnCount)
+    {
+        $this->actualMaxColumnCount = $actualMaxColumnCount;
+        return $this;
     }
 }
