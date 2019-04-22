@@ -284,9 +284,9 @@ class TableBuildTest extends TestCase
         $cell->addClass('good');
         $cell->setId('great');
         $cell->contentCaptureStart();
-        ?>
+        echo '
         <a href="https://andydune.ru">andydune.ru</a>
-<?
+';
         $cell->contentCaptureEnd();
         $html = (new \AndyDune\HtmlTable\BuilderElement\Cell($cell))->getHtml();
         $this->assertEquals('<td id="great" class="good" style="color: black"><a href="https://andydune.ru">andydune.ru</a></td>',
@@ -295,11 +295,11 @@ class TableBuildTest extends TestCase
         $table = new Table();
         $row = $table->row();
         $row->contentCaptureStart();
-        ?>
+        echo '
         <td>1</td>
         <td>2</td>
         <td>3</td>
-        <?
+        ';
         $row->contentCaptureEnd();
         $html = (new \AndyDune\HtmlTable\BuilderElement\Row($row))->getHtml();
         $this->assertEquals('<tr><td>1</td>
@@ -310,11 +310,11 @@ class TableBuildTest extends TestCase
         $table = new Table();
         $head = $table->head();
         $head->contentCaptureStart();
-        ?>
+        echo '
         <th>1</th>
         <th>2</th>
         <th>3</th>
-        <?
+        ';
         $head->contentCaptureEnd();
 
         $html = (new \AndyDune\HtmlTable\BuilderElement\Head($head))->getHtml();
