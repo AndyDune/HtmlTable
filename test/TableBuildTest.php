@@ -308,15 +308,16 @@ class TableBuildTest extends TestCase
             $html);
 
         $table = new Table();
-        $row = $table->head();
-        $row->contentCaptureStart();
+        $head = $table->head();
+        $head->contentCaptureStart();
         ?>
         <th>1</th>
         <th>2</th>
         <th>3</th>
         <?
-        $row->contentCaptureEnd();
-        $html = (new \AndyDune\HtmlTable\BuilderElement\Row($row))->getHtml();
+        $head->contentCaptureEnd();
+
+        $html = (new \AndyDune\HtmlTable\BuilderElement\Head($head))->getHtml();
         $this->assertEquals('<tr><th>1</th>
         <th>2</th>
         <th>3</th></tr>',
