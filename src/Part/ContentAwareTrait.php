@@ -32,4 +32,16 @@ trait ContentAwareTrait
         $this->content = $content;
         return $this;
     }
+
+    public function contentCaptureStart()
+    {
+        ob_start();
+        return $this;
+    }
+
+    public function contentCaptureEnd()
+    {
+        $this->content = trim(ob_get_clean());
+        return $this;
+    }
 }

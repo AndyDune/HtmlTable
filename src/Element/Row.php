@@ -46,6 +46,10 @@ class Row implements AttributesAwareInterface
      */
     public function cell($rowCode = null)
     {
+        if ($rowCode and array_key_exists($rowCode, $this->cells)) {
+            return $this->cells[$rowCode];
+        }
+
         $cell = new Cell($this);
         $cell->setContent($rowCode);
         $this->addColumnCount();

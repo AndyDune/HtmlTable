@@ -276,4 +276,51 @@ class TableBuildTest extends TestCase
 
     }
 
+    public function testContentCapture()
+    {
+        $table = new Table();
+        $cell = $table->row()->cell();
+        $cell->addStyle('color', 'black');
+        $cell->addClass('good');
+        $cell->setId('great');
+        $cell->contentCaptureStart();
+        ?>
+        <a href="https://andydune.ru">andydune.ru</a>
+<?
+        $cell->contentCaptureEnd();
+        $html = (new \AndyDune\HtmlTable\BuilderElement\Cell($cell))->getHtml();
+        $this->assertEquals('<td id="great" class="good" style="color: black"><a href="https://andydune.ru">andydune.ru</a></td>',
+            $html);
+
+        $table = new Table();
+        $row = $table->row();
+        $row->contentCaptureStart();
+        ?>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <?
+        $row->contentCaptureEnd();
+        $html = (new \AndyDune\HtmlTable\BuilderElement\Row($row))->getHtml();
+        $this->assertEquals('<tr><td>1</td>
+        <td>2</td>
+        <td>3</td></tr>',
+            $html);
+
+        $table = new Table();
+        $row = $table->head();
+        $row->contentCaptureStart();
+        ?>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <?
+        $row->contentCaptureEnd();
+        $html = (new \AndyDune\HtmlTable\BuilderElement\Row($row))->getHtml();
+        $this->assertEquals('<tr><th>1</th>
+        <th>2</th>
+        <th>3</th></tr>',
+            $html);
+    }
+
 }
