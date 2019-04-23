@@ -115,3 +115,13 @@ $buider = new Builder($table);
 $builder->setGroupingSections(true);
 echo $buider->getHtml(); 
 ``` 
+
+Class structure
+----------
+
+Table structure is reflect by classes:
+
+- `AndyDune\HtmlTable\Table` - a root of the structure
+- `AndyDune\HtmlTable\\Element\Row` - it implements a table row 
+- `AndyDune\HtmlTable\\Element\Head` - it implements a special table row (head). It can be only one. 
+- `AndyDune\HtmlTable\\Element\Cell` - it implements a table cell. It is a part of `Row` (`Head`) 
