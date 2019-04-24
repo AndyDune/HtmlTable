@@ -122,6 +122,11 @@ Class structure
 Table structure is reflect by classes:
 
 - `AndyDune\HtmlTable\Table` - a root of the structure
-- `AndyDune\HtmlTable\\Element\Row` - it implements a table row 
-- `AndyDune\HtmlTable\\Element\Head` - it implements a special table row (head). It can be only one. 
-- `AndyDune\HtmlTable\\Element\Cell` - it implements a table cell. It is a part of `Row` (`Head`) 
+- `AndyDune\HtmlTable\Element\Row` - it implements a table row 
+- `AndyDune\HtmlTable\Element\Head` - it implements a special table row (head). It can be only one. 
+- `AndyDune\HtmlTable\Element\Cell` - it implements a table cell. It is a part of `Row` (`Head`)
+
+- `AndyDune\HtmlTable\Builder` - the root class for building html code for table. 
+It receives `Table` instance as a construct parameter.  
+
+- There are many assistive classes for building table, but you don't need to know about their. 
