@@ -15,8 +15,6 @@ namespace AndyDune\HtmlTable\BuilderElement;
 class TableBody extends TableHead
 {
 
-    protected $cellOrderMap = [];
-
     public function getMaxRowCount()
     {
         $rows = $this->table->getRows();
@@ -41,18 +39,6 @@ class TableBody extends TableHead
             $content .= $rowBuilder->getHtml();
         }
         return $content;
-    }
-
-    /**
-     * Array of cells codes to show in order.
-     *
-     * @param array $mapArray
-     * @return $this
-     */
-    public function setCellsOrderMap($mapArray = [])
-    {
-        $this->cellOrderMap = $mapArray;
-        return $this;
     }
 
 }

@@ -24,6 +24,9 @@ class TableHead implements ElementInterface
 
     protected $actualMaxColumnCount = null;
 
+    protected $cellOrderMap = [];
+
+
     public function __construct(Table $table)
     {
         $this->table = $table;
@@ -46,6 +49,9 @@ class TableHead implements ElementInterface
         }
 
         $rowBuilder = new Head($this->table->head(), $this->getActualMaxColumnCount());
+        if ($this->cellOrderMap) {
+            $rowBuilder->setCellsOrderMap($this->cellOrderMap);
+        }
         return $rowBuilder->getHtml();
 
     }
@@ -67,4 +73,17 @@ class TableHead implements ElementInterface
         $this->actualMaxColumnCount = $actualMaxColumnCount;
         return $this;
     }
+
+    /**
+     * Array of cells codes to show in order.
+     *
+     * @param array $mapArray
+     * @return $this
+     */
+    public function setCellsOrderMap($mapArray = [])
+    {
+        $this->cellOrderMap = $mapArray;
+        return $this;
+    }
+
 }

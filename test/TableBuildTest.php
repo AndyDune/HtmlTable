@@ -324,4 +324,30 @@ class TableBuildTest extends TestCase
             $html);
     }
 
+    public function testCellOrderMapSetWithBuilder()
+    {
+        $table = new Table();
+        $head = $table->head();
+        $head->cell('one');
+        $head->cell('two');
+        $head->cell('three');
+        $row = $table->row();
+        $row->cell('two')->setContent(2);
+        $row->cell('one')->setContent(1);
+        $row->cell('three')->setContent(3);
+
+        $builder = new Builder($table);
+        $builder->setCellOrderMap(['two', 'one']);
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>two</th><th>one</th></tr>'
+            . '<tr><td>2</td><td>1</td></tr></table>', $html);
+
+
+        $builder = new Builder($table);
+        $builder->setCellOrderMap('three', 'one');
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>three</th><th>one</th></tr>'
+            . '<tr><td>3</td><td>1</td></tr></table>', $html);
+    }
+
 }

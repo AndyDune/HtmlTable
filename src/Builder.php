@@ -36,10 +36,28 @@ class Builder implements ElementInterface
      */
     protected $groupingSections = false;
 
+    protected $cellOrderMap = null;
 
     public function __construct(Table $table)
     {
         $this->table = $table;
+    }
+
+    /**
+     * @param $map
+     * @return $this
+     */
+    public function setCellOrderMap(...$map)
+    {
+        if (!array_key_exists(0, $map)) {
+            return $this;
+        }
+        if (is_array($map[0])) {
+            $this->cellOrderMap = $map[0];
+        } else {
+            $this->cellOrderMap = $map;
+        }
+        return $this;
     }
 
     public function getHtml()
@@ -51,13 +69,22 @@ class Builder implements ElementInterface
 
         if ($this->table->isHasHead()) {
             $tableHeadBuilder = new TableHead($this->table);
-            $tableBodyBuilder->setCellsOrderMap($this->table->head()->getCellsOrderMap());
+            if ($this->cellOrderMap !== null) {
+                $tableBodyBuilder->setCellsOrderMap($this->cellOrderMap);
+                $tableHeadBuilder->setCellsOrderMap($this->cellOrderMap);
+            } else {
+                $tableBodyBuilder->setCellsOrderMap($this->table->head()->getCellsOrderMap());
+            }
             if ($tableHeadBuilder->getMaxRowCount() > $maxColumnCount) {
                 $maxColumnCount = $tableHeadBuilder->getMaxRowCount();
             }
 
             $tableHeadBuilder->setActualMaxColumnCount($maxColumnCount);
             $replace->head = $tableHeadBuilder->getHtml();
+        } else {
+            if ($this->cellOrderMap !== null) {
+                $tableBodyBuilder->setCellsOrderMap($this->cellOrderMap);
+            }
         }
 
         $tableBodyBuilder->setActualMaxColumnCount($maxColumnCount);
