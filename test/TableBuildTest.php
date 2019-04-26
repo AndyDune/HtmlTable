@@ -331,10 +331,14 @@ class TableBuildTest extends TestCase
         $head->cell('one');
         $head->cell('two');
         $head->cell('three');
+        $head->cell('one1');
+        $head->cell('one2');
         $row = $table->row();
         $row->cell('two')->setContent(2);
         $row->cell('one')->setContent(1);
         $row->cell('three')->setContent(3);
+        $row->cell('one1')->setContent(11);
+        $row->cell('one2')->setContent(12);
 
         $builder = new Builder($table);
         $builder->setCellOrderMap(['two', 'one']);
@@ -348,6 +352,31 @@ class TableBuildTest extends TestCase
         $html = $builder->getHtml();
         $this->assertEquals('<table><tr><th>three</th><th>one</th></tr>'
             . '<tr><td>3</td><td>1</td></tr></table>', $html);
+
+        $builder = new Builder($table);
+        $builder->setCellOrderMap(['two', 'one'], 'one1');
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>two</th><th>one</th><th>one1</th></tr>'
+            . '<tr><td>2</td><td>1</td><td>11</td></tr></table>', $html);
+
+        $builder = new Builder($table);
+        $builder->setCellOrderMap('one2', ['two', 'one']);
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>one2</th><th>two</th><th>one</th></tr>'
+            . '<tr><td>12</td><td>2</td><td>1</td></tr></table>', $html);
+
+        $builder = new Builder($table);
+        $builder->setCellOrderMap('one1', ['two', 'one'], 'one2');
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>one1</th><th>two</th><th>one</th><th>one2</th></tr>'
+            . '<tr><td>11</td><td>2</td><td>1</td><td>12</td></tr></table>', $html);
+
+        $builder = new Builder($table);
+        $builder->setCellOrderMap('one', ['two', 'one'], 'one');
+        $html = $builder->getHtml();
+        $this->assertEquals('<table><tr><th>one</th><th>two</th><th>one</th><th>one</th></tr>'
+            . '<tr><td>1</td><td>2</td><td>1</td><td>1</td></tr></table>', $html);
+
     }
 
 }

@@ -49,14 +49,14 @@ class Builder implements ElementInterface
      */
     public function setCellOrderMap(...$map)
     {
-        if (!array_key_exists(0, $map)) {
-            return $this;
-        }
-        if (is_array($map[0])) {
-            $this->cellOrderMap = $map[0];
-        } else {
-            $this->cellOrderMap = $map;
-        }
+        $this->cellOrderMap = array_reduce($map, function ($carry, $item){
+            if (is_array($item)) {
+                $carry = array_merge($carry, $item);
+            } else {
+                $carry[] = $item;
+            }
+            return $carry;
+        }, []);
         return $this;
     }
 
