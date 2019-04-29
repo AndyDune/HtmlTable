@@ -129,4 +129,56 @@ Table structure is reflect by classes:
 - `AndyDune\HtmlTable\Builder` - the root class for building html code for table. 
 It receives `Table` instance as a construct parameter.  
 
-- There are many assistive classes for building table, but you don't need to know about their. 
+- There are many assistive classes for building table, but you don't need to know about their.
+
+Describe table
+-------
+
+Table may have attributes, data rows, head row. Rows and cells may have attributes too.
+
+### Table, row, cell class attribute
+
+Use method `addClass` to inject class into table element. Element may have many classes:
+
+```php
+use AndyDune\HtmlTable\Table;
+
+// Set classes *useful* and  *one* to table.
+$table = new Table();
+$table->addClass('useful')->addClass('one');
+$table->getClasses(); ['useful', 'one]
+// <table class="useful one">
+
+// Set class *active* to row.
+$row = $table->row();
+$row->addClass('active');
+// <tr class="active">
+
+// Set class *left* to cell.
+$cell = $row->cell();
+$row->addClass('left');
+// <td class="left">
+```  
+
+### Table, row, cell id attribute
+
+Use method `setId` to inject id into table element. Element may have only one id:
+
+```php
+use AndyDune\HtmlTable\Table;
+
+// <table id="top">
+$table = new Table();
+$table->setId('top');
+$table->getId(); // top
+
+// <tr id="active">
+$row = $table->row();
+$row->setId('active');
+$row->getId(); // active
+
+// <td id="left">
+$cell = $row->cell();
+$row->setId('left');
+$row->getId(); //left
+```  
