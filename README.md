@@ -78,9 +78,9 @@ Here is small part of code for drawing html table with dynamic data.
     </tbody>
 </table>
 ```
-It simple to accidentally break html by removing single tag. And it is difficult to read and change.
+It is simple to accidentally break html by removing single tag. And it is difficult to read and change.
 
-There is better code next down:
+There is better code down below:
 ```php
 use AndyDune\HtmlTable\Builder;
 use AndyDune\HtmlTable\Table;
